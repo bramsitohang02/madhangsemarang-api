@@ -8,20 +8,28 @@ use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
 {
+    /**
+     * Menampilkan daftar SEMUA restoran untuk admin.
+     * Termasuk yang statusnya 'pending' dan 'approved'.
+     */
     public function index()
     {
-        // Tambahkan pemeriksaan admin di sini
+        // Pemeriksaan manual untuk memastikan hanya admin yang bisa mengakses
         if (auth()->user()->is_admin != true) {
             return response()->json(['message' => 'This action is unauthorized.'], 403);
         }
 
-        $restaurants = Restaurant::orderBy('status', 'asc')->get();
+        // withTrashed() disertakan agar data yang soft-deleted juga muncul untuk admin
+        $restaurants = Restaurant::withTrashed()->orderBy('status', 'asc')->get();
         return response()->json($restaurants);
     }
 
+    /**
+     * Mengubah status restoran menjadi 'approved'.
+     */
     public function approve(Restaurant $restaurant)
     {
-        // Tambahkan pemeriksaan admin di sini
+        // Pemeriksaan manual untuk memastikan hanya admin yang bisa mengakses
         if (auth()->user()->is_admin != true) {
             return response()->json(['message' => 'This action is unauthorized.'], 403);
         }
@@ -30,7 +38,7 @@ class RestaurantController extends Controller
         $restaurant->save();
 
         return response()->json([
-            'message' => 'Restoran berhasil disetujui!',
+            'message' => 'Restoran berhasil disetujui.',
             'restaurant' => $restaurant
         ]);
     }
