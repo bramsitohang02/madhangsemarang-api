@@ -16,11 +16,10 @@ class Restaurant extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'location',
-        'category',
-        'description',
-        'image_url',
+        'name', 'location', 'category', 'description', 'image_url', 
+    'user_id', 'status',
+    // Tambahkan ini
+    'operating_hours', 'price_range', 'contact_number', 'website_url'
     ];
 
     public function reviews()

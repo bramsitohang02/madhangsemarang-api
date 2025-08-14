@@ -31,6 +31,10 @@ class RestaurantController extends Controller
             'location' => 'required|string|max:255',
             'category' => 'required|string|max:50',
             'description' => 'required|string',
+            'operating_hours' => 'nullable|string|max:255',
+            'price_range' => 'nullable|string|max:255',
+            'contact_number' => 'nullable|string|max:255',
+            'website_url' => 'nullable|string|max:255',
         ]);
 
         $restaurant->update($validatedData);
@@ -53,24 +57,42 @@ class RestaurantController extends Controller
         return response()->json(null, 204);
     }
 
-    // Tambahkan fungsi baru ini di dalam class RestaurantController
-public function suggest(Request $request)
-{
-    $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
-        'location' => 'required|string|max:255',
-        'category' => 'required|string|max:50',
-        'description' => 'required|string',
-        // validasi lain jika ada, misal 'image_url'
-    ]);
+    // --- FUNGSI SUGGEST YANG SUDAH DIPERBARUI ---
+    public function suggest(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'category' => 'required|string|max:50',
+            'description' => 'required|string',
+            'operating_hours' => 'nullable|string|max:255',
+            'price_range' => 'nullable|string|max:255',
+            'contact_number' => 'nullable|string|max:255',
+            'website_url' => 'nullable|string|max:255',
+            // Tambahkan validasi untuk gambar
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+        ]);
 
-    // Buat restoran baru dengan status 'pending'
-    // dan hubungkan dengan user yang sedang login
-    $restaurant = $request->user()->restaurants()->create($validatedData);
+        $imageUrl = null;
+        // Cek jika ada file gambar yang diunggah
+        if ($request->hasFile('image')) {
+            // Simpan gambar di folder 'storage/app/public/restaurants'
+            // dan dapatkan path-nya untuk disimpan di database.
+            $path = $request->file('image')->store('restaurants', 'public');
+            $imageUrl = $path;
+        }
 
-    return response()->json([
-        'message' => 'Terima kasih! Saran Anda akan kami tinjau.',
-        'restaurant' => $restaurant
-    ], 201);
-}
+        // Hapus 'image' dari array karena tidak ada kolom 'image' di tabel
+        unset($validatedData['image']);
+        // Gabungkan data yang divalidasi dengan path gambar
+        $dataToCreate = array_merge($validatedData, ['image_url' => $imageUrl]);
+
+        // Buat restoran baru dengan data yang sudah lengkap
+        $restaurant = $request->user()->restaurants()->create($dataToCreate);
+
+        return response()->json([
+            'message' => 'Terima kasih! Saran Anda akan kami tinjau.',
+            'restaurant' => $restaurant
+        ], 201);
+    }
 }
