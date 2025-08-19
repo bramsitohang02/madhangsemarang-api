@@ -13,7 +13,7 @@ class TopicController extends Controller
      */
     public function index()
     {
-        $topics = Topic::with('user')->latest()->get();
+        $topics = Topic::with('user')->withCount('comments')->latest()->get();
         return response()->json($topics);
     }
 
