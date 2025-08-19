@@ -52,7 +52,12 @@ class User extends Authenticatable
     }
 
     public function restaurants()
-{
+    {
     return $this->hasMany(Restaurant::class);
-}
+    }
+    
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
 }
