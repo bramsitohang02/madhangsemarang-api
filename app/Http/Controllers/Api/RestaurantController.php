@@ -16,7 +16,7 @@ class RestaurantController extends Controller
 
     public function show(Restaurant $restaurant)
     {
-        $restaurant->load('reviews.user');
+        $restaurant->load('reviews.user', 'photos.user');
         return response()->json($restaurant);
     }
     

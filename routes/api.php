@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\Admin\RestaurantController as AdminRestaurantController;
 use App\Http\Controllers\Api\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Api\RestaurantPhotoController;
 
 // --- RUTE PUBLIK ---
 Route::post('/register', [AuthController::class, 'register']);
@@ -31,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/reviews', [ReviewController::class, 'store']);
     Route::post('/restaurants/suggest', [RestaurantController::class, 'suggest']);
     Route::post('/events/suggest', [EventController::class, 'suggest']);
+    Route::post('/restaurants/photos', [RestaurantPhotoController::class, 'store']);
 });
 
 // --- RUTE KHUSUS ADMIN ---
