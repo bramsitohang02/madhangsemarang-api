@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     // Rute Admin untuk Restoran
     Route::get('/restaurants', [AdminRestaurantController::class, 'index']);
     Route::patch('/restaurants/{restaurant}/approve', [AdminRestaurantController::class, 'approve']);
+    Route::post('/restaurants/delete/{id}', [RestaurantController::class, 'destroy']);
     
     // Rute LENGKAP untuk Manajemen Agenda
     Route::get('/events', [AdminEventController::class, 'index']);

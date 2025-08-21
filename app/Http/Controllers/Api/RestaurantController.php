@@ -41,23 +41,24 @@ class RestaurantController extends Controller
         return response()->json($restaurant);
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Restaurant $restaurant)
     {
+        dd('Fungsi destroy berhasil dipanggil');
+        // Pemeriksaan manual tidak lagi diperlukan karena sudah ada middleware Gate
+        // Namun, kita tetap menyimpannya sebagai workaround untuk masalah environment Anda
         if (auth()->user()->is_admin != true) {
             return response()->json(['message' => 'This action is unauthorized.'], 403);
         }
-        
-        $restaurant = Restaurant::find($id);
-        
-        if (!$restaurant) {
-            return response()->json(['message' => 'Restaurant not found.'], 404);
-        }
-        
+
+        // Langsung hapus, tidak perlu mencari manual lagi
         $restaurant->delete();
+
         return response()->json(null, 204);
     }
 
-    // --- FUNGSI SUGGEST YANG SUDAH DIPERBARUI ---
     public function suggest(Request $request)
     {
         $validatedData = $request->validate([
@@ -69,25 +70,18 @@ class RestaurantController extends Controller
             'price_range' => 'nullable|string|max:255',
             'contact_number' => 'nullable|string|max:255',
             'website_url' => 'nullable|string|max:255',
-            // Tambahkan validasi untuk gambar
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
         ]);
 
         $imageUrl = null;
-        // Cek jika ada file gambar yang diunggah
         if ($request->hasFile('image')) {
-            // Simpan gambar di folder 'storage/app/public/restaurants'
-            // dan dapatkan path-nya untuk disimpan di database.
             $path = $request->file('image')->store('restaurants', 'public');
             $imageUrl = $path;
         }
 
-        // Hapus 'image' dari array karena tidak ada kolom 'image' di tabel
         unset($validatedData['image']);
-        // Gabungkan data yang divalidasi dengan path gambar
         $dataToCreate = array_merge($validatedData, ['image_url' => $imageUrl]);
 
-        // Buat restoran baru dengan data yang sudah lengkap
         $restaurant = $request->user()->restaurants()->create($dataToCreate);
 
         return response()->json([
