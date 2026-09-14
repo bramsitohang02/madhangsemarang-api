@@ -3,7 +3,7 @@
 ## 📌 Deskripsi Proyek
 Repositori ini berisi *source code backend* berupa RESTful API untuk aplikasi "Madhang Semarang", sebuah platform direktori kuliner, agenda *event*, dan forum diskusi interaktif. API ini dibangun untuk melayani permintaan data dari aplikasi *frontend* secara efisien dan aman.
 
-> 🔗 **Tautan Frontend:** [(https://github.com/bramsitohang02/madhangsemarang-api.git)]
+> 🔗 **Tautan Frontend:** [(https://github.com/bramsitohang02/madhangsemarang-app.git)]
 
 ## 🛠️ Teknologi & Arsitektur
 * **Framework:** Laravel (PHP)
