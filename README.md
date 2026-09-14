@@ -24,13 +24,14 @@ Repositori ini berisi *source code backend* berupa RESTful API untuk aplikasi "M
    git clone [https://github.com/username-anda/madhangsemarang-api.git](https://github.com/username-anda/madhangsemarang-api.git)
    cd madhangsemarang-api
 
-Instal dependensi:
+2. Instal dependensi:
+```bash
    composer install
 
-Konfigurasi Environment:
+3. Konfigurasi Environment:
 Salin file .env.example menjadi .env, lalu sesuaikan kredensial koneksi database Anda.
    cp .env.example .env
-php artisan key:generate
+   php artisan key:generate
 
 Migrasi Database & Seeder:
 php artisan migrate --seed
