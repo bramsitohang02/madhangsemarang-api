@@ -25,15 +25,19 @@ Repositori ini berisi *source code backend* berupa RESTful API untuk aplikasi "M
    cd madhangsemarang-api
 
 2. Instal dependensi:
+   ```bash
    composer install
 
-3. Konfigurasi Environment:
+4. Konfigurasi Environment:
 (Salin file .env.example menjadi .env, lalu sesuaikan kredensial koneksi database Anda)
+   ```bash
    cp .env.example .env
    php artisan key:generate
 
-4. Migrasi Database & Seeder:
+5. Migrasi Database & Seeder:
+   ```bash
    php artisan migrate --seed
 
-5. Jalankan Server Lokal:
+6. Jalankan Server Lokal:
+   ```bash
    php artisan serve
